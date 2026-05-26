@@ -117,24 +117,18 @@ def _run_gemini(ctx: APIRuntimeContext, prompt: str) -> str:
     return response.text.strip()
 
 
-def _run_local(ctx: APIRuntimeContext, prompt: str) -> str:
-    logger.info(
-        "Calling LOCAL OpenAI-compatible API | model=%s base_url=%s",
-        ctx.agent_name,
-        ctx.base_url,
+def _run_local(ctx, prompt: str) -> str:
+    import requests
+    logger.info("Calling Ollama native API | model=llama3.2")
+    response = requests.post(
+        "http://localhost:11434/api/chat",
+        json={
+            "model": "llama3.2",
+            "messages": [{"role": "user", "content": prompt}],
+            "stream": False
+        },
+        headers={"Content-Type": "application/json; charset=utf-8"},
+        timeout=120
     )
-
-    if not ctx.base_url:
-        raise RuntimeError("LOCAL provider requires base_url")
-
-    client = OpenAI(
-        base_url=f"{ctx.base_url.rstrip('/')}/v1",
-        api_key="local",   # required but unused
-    )
-
-    response = client.chat.completions.create(
-        model=ctx.agent_name,
-        messages=[{"role": "user", "content": prompt}],
-    )
-
-    return response.choices[0].message.content.strip()
+    response.raise_for_status()
+    return response.json()["message"]["content"]

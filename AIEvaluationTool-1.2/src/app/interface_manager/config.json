@@ -8,6 +8,6 @@
     "run_mode": "single_window",
     "agent_name": "ollama-llama3",
     "application_name": "ollama-llama3",
-    "application_url": "http://localhost:11434",
+    "application_url": "http://localhost:11434/api/chat",
     "headless": "False"
 }
