@@ -1,0 +1,11 @@
+{
+    "db": {
+        "engine": "sqlite",
+        "file": "AIEvaluationData.db"
+    },
+    "files": {
+        "plans": "data/plans.json",
+        "testcases": "data/DataPoints.json",
+        "strategies": "data/strategy_id.json"
+    }
+}

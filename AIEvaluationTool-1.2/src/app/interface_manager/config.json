@@ -1,0 +1,13 @@
+{
+    "base_url": "http://localhost:8001",
+    "application_type": "API",
+    "debug": "True",
+    "ollama_server_url": "http://localhost:11434",
+    "server_url": "http://localhost:11434",
+    "action": "send_all_prompts",
+    "run_mode": "single_window",
+    "agent_name": "ollama-llama3",
+    "application_name": "ollama-llama3",
+    "application_url": "http://localhost:11434",
+    "headless": "False"
+}
