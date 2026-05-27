@@ -119,11 +119,11 @@ def _run_gemini(ctx: APIRuntimeContext, prompt: str) -> str:
 
 def _run_local(ctx, prompt: str) -> str:
     import requests
-    logger.info("Calling Ollama native API | model=llama3.2")
+    logger.info(f"Calling Ollama native API | model={ctx.agent_name}")
     response = requests.post(
         "http://localhost:11434/api/chat",
         json={
-            "model": "llama3.2",
+            "model": ctx.agent_name,
             "messages": [{"role": "user", "content": prompt}],
             "stream": False
         },
