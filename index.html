@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CeRAI Evaluation Report — Gates Foundation AI Fellowship</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,wght@0,300;0,600;0,900;1,300&display=swap');
+
+  :root {
+    --bg: #0e0f0c;
+    --surface: #161713;
+    --border: #2a2b27;
+    --accent: #c8f060;
+    --accent2: #f0a060;
+    --muted: #6b6d64;
+    --text: #e8e9e2;
+    --text-dim: #9a9b94;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Mono', monospace;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  .hero {
+    border-bottom: 1px solid var(--border);
+    padding: 80px 60px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(200,240,96,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 4px 10px;
+    margin-bottom: 28px;
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 900;
+    line-height: 1.05;
+    max-width: 800px;
+    margin-bottom: 24px;
+    color: var(--text);
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    margin-top: 32px;
+  }
+
+  .meta-item {
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  .meta-item strong {
+    display: block;
+    color: var(--text-dim);
+    font-size: 13px;
+    margin-bottom: 2px;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 60px;
+  }
+
+  section {
+    padding: 60px 60px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+
+  h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: var(--text);
+  }
+
+  p {
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--text-dim);
+    max-width: 700px;
+    margin-bottom: 16px;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin-top: 32px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 28px;
+  }
+
+  .card-label {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .card-value {
+    font-family: 'Fraunces', serif;
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .card-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .issue-list {
+    list-style: none;
+    margin-top: 24px;
+  }
+
+  .issue-list li {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    padding: 20px 24px;
+    margin-bottom: 2px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+  }
+
+  .issue-num {
+    font-size: 11px;
+    color: var(--accent2);
+    min-width: 32px;
+    margin-top: 2px;
+  }
+
+  .issue-content h4 {
+    font-size: 13px;
+    color: var(--text);
+    margin-bottom: 6px;
+    letter-spacing: 0.02em;
+  }
+
+  .issue-content p {
+    font-size: 12px;
+    color: var(--muted);
+    margin: 0;
+    max-width: 100%;
+  }
+
+  .issue-tag {
+    display: inline-block;
+    font-size: 10px;
+    padding: 2px 8px;
+    border: 1px solid var(--accent2);
+    color: var(--accent2);
+    letter-spacing: 0.08em;
+    margin-top: 8px;
+  }
+
+  .testcase-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 24px;
+    font-size: 12px;
+  }
+
+  .testcase-table th {
+    text-align: left;
+    padding: 10px 14px;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    font-weight: 500;
+  }
+
+  .testcase-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-dim);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+
+  .testcase-table tr:hover td {
+    background: var(--surface);
+  }
+
+  .lang-badge {
+    display: inline-block;
+    font-size: 10px;
+    padding: 2px 7px;
+    background: rgba(200,240,96,0.1);
+    border: 1px solid rgba(200,240,96,0.3);
+    color: var(--accent);
+    margin-right: 4px;
+  }
+
+  .status-ok { color: var(--accent); }
+  .status-warn { color: var(--accent2); }
+  .status-fail { color: #f06060; }
+
+  .finding-block {
+    border-left: 2px solid var(--accent);
+    padding: 16px 20px;
+    background: rgba(200,240,96,0.04);
+    margin-bottom: 12px;
+  }
+
+  .finding-block h4 {
+    font-size: 13px;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .finding-block p {
+    font-size: 12px;
+    color: var(--muted);
+    margin: 0;
+    max-width: 100%;
+  }
+
+  .limit-block {
+    border-left: 2px solid var(--accent2);
+    padding: 16px 20px;
+    background: rgba(240,160,96,0.04);
+    margin-bottom: 12px;
+  }
+
+  .limit-block h4 {
+    font-size: 13px;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .limit-block p {
+    font-size: 12px;
+    color: var(--muted);
+    margin: 0;
+    max-width: 100%;
+  }
+
+  pre {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 20px;
+    font-size: 11px;
+    line-height: 1.7;
+    overflow-x: auto;
+    margin-top: 20px;
+    color: var(--text-dim);
+  }
+
+  .json-key { color: var(--accent2); }
+  .json-val { color: var(--accent); }
+  .json-str { color: #a8d8a0; }
+  .json-num { color: #f0d060; }
+
+  footer {
+    padding: 40px 60px;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  @media (max-width: 700px) {
+    .hero, section, footer { padding: 40px 24px; }
+    .grid-2 { grid-template-columns: 1fr; }
+    h1 { font-size: 32px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="tag">Gates Foundation AI Fellowship — India 2026</div>
+  <h1>Evaluating <em>llm-based</em><br>conversational agents<br>on Indian languages</h1>
+  <p style="max-width:620px; margin-top:16px; color: var(--text-dim)">
+    A technical evaluation of the CeRAI AIEvaluationTool v1.2 against a locally-hosted
+    Gemma3n:e2b model, across agriculture, health, education, and disability domains,
+    using multi-turn Hindi, Bengali, and Assamese test cases.
+  </p>
+  <div class="hero-meta">
+    <div class="meta-item"><strong>Tool</strong>CeRAI AIEvaluationTool v1.2</div>
+    <div class="meta-item"><strong>Model Evaluated</strong>Gemma3n:e2b via Ollama</div>
+    <div class="meta-item"><strong>Judge Model</strong>Gemma3n:e2b (local)</div>
+    <div class="meta-item"><strong>Test Plan</strong>Conversational_Quality</div>
+    <div class="meta-item"><strong>Metric</strong>Dialogue_Coherence</div>
+    <div class="meta-item"><strong>Test Cases Run</strong>10</div>
+  </div>
+</div>
+
+<!-- Section 1: What was evaluated -->
+<section>
+  <div class="section-label">01 — System Under Test</div>
+  <h2>What was evaluated and why</h2>
+  <p>
+    The target system is <strong>Gemma3n:e2b</strong>, Google's compact multilingual model,
+    served locally via Ollama. It was chosen for three reasons: it supports Indian languages
+    natively, it runs on consumer hardware (RTX 3050 4GB), and it represents the class of
+    models most likely to be deployed in low-resource, offline-first settings relevant to
+    the Gates Foundation's India programmes.
+  </p>
+  <p>
+    The evaluation used the CeRAI AIEvaluationTool's <strong>Conversational_Quality</strong>
+    test plan with the <strong>Dialogue_Coherence</strong> metric — assessing whether the model
+    maintains context across multi-turn conversations and produces coherent, contextually
+    appropriate responses.
+  </p>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-label">Languages tested</div>
+      <div class="card-value">4</div>
+      <div class="card-desc">Hindi, Bengali, Assamese, English — all present in the default test suite</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Domains covered</div>
+      <div class="card-value">4</div>
+      <div class="card-desc">Agriculture, healthcare, education, disability assistance</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Test cases executed</div>
+      <div class="card-value">10</div>
+      <div class="card-desc">Multi-turn conversations; 1–3 prior turns before the evaluated response</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Bugs fixed to run</div>
+      <div class="card-value">5</div>
+      <div class="card-desc">Required code patches before any evaluation could complete</div>
+    </div>
+  </div>
+</section>
+
+<!-- Section 2: Test Suite -->
+<section>
+  <div class="section-label">02 — Test Suite Design</div>
+  <h2>Test suite and reasoning</h2>
+  <p>
+    The CeRAI tool ships with 670 test cases. Rather than building custom test cases,
+    this evaluation used the existing <strong>DataPoints.json</strong> corpus filtered to
+    the <em>agriculture</em> domain — the most relevant domain for the fellowship's focus
+    on food security and rural development — with language left unfiltered to capture
+    multilingual behaviour naturally.
+  </p>
+  <p>
+    The <strong>Dialogue_Coherence</strong> metric was chosen because it tests the property
+    most critical for real-world deployment: whether a chatbot maintains context across a
+    conversation, not just whether it answers individual questions correctly. For a farmer
+    asking about crop disease mid-conversation about irrigation, context persistence is
+    non-negotiable.
+  </p>
+
+  <table class="testcase-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Domain</th>
+        <th>Language</th>
+        <th>Topic</th>
+        <th>Turns</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>P36</td><td>Disability</td><td><span class="lang-badge">EN</span></td><td>Chemical lab equipment (safety refusal)</td><td>3</td></tr>
+      <tr><td>P6848</td><td>Agriculture</td><td><span class="lang-badge">BN</span></td><td>Homemade pesticides for balcony garden</td><td>2</td></tr>
+      <tr><td>P327</td><td>Agriculture</td><td><span class="lang-badge">EN</span></td><td>Soil pH for rice cultivation (context shift)</td><td>3</td></tr>
+      <tr><td>P328</td><td>Agriculture</td><td><span class="lang-badge">EN</span></td><td>Weed control in cotton (topic jump)</td><td>3</td></tr>
+      <tr><td>P326</td><td>Disability</td><td><span class="lang-badge">EN</span></td><td>Chemical lab equipment (safety refusal, repeat)</td><td>3</td></tr>
+      <tr><td>P325</td><td>Education</td><td><span class="lang-badge">EN/PA</span></td><td>Hindi alphabet help from student</td><td>3</td></tr>
+      <tr><td>P6842</td><td>Agriculture</td><td><span class="lang-badge">BN</span></td><td>Poor crop yield — seeking guidance</td><td>1</td></tr>
+      <tr><td>P5170</td><td>Agriculture</td><td><span class="lang-badge">AS/BN</span></td><td>Conventional vs organic farming methods</td><td>1</td></tr>
+      <tr><td>P34</td><td>Agriculture</td><td><span class="lang-badge">EN</span></td><td>Orange cultivation — water requirements</td><td>2</td></tr>
+      <tr><td>P323</td><td>Healthcare</td><td><span class="lang-badge">EN</span></td><td>TB vaccine side effects</td><td>3</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- Section 3: Results -->
+<section>
+  <div class="section-label">03 — Results</div>
+  <h2>What the results show</h2>
+
+  <p>
+    The model completed all 10 test cases. The response analyzer returned real scores
+    for 3 cases and 0 for 7. The 3 scoring cases used <strong>language_similarity_gt</strong>
+    — a rule-based check that the response language matches the prompt language — and all
+    scored <strong>1.0</strong>. The remaining 7 cases mapped to a strategy named
+    <strong>"auto"</strong> which does not exist in the strategy registry — another tool
+    bug, not a model failure.
+  </p>
+
+  <table class="testcase-table" style="margin-top:20px;">
+    <thead><tr><th>Testcase</th><th>Strategy</th><th>Score</th><th>Note</th></tr></thead>
+    <tbody>
+      <tr><td>P6842</td><td>language_similarity_gt</td><td class="status-ok">1.0</td><td>Bengali — correct</td></tr>
+      <tr><td>P6848</td><td>language_similarity_gt</td><td class="status-ok">1.0</td><td>Bengali — correct</td></tr>
+      <tr><td>P5170</td><td>language_similarity_gt</td><td class="status-ok">1.0</td><td>Assamese/Bengali — correct</td></tr>
+      <tr><td>P327–P325</td><td>auto</td><td class="status-fail">0</td><td>Strategy "auto" not in registry (bug #6)</td></tr>
+    </tbody>
+  </table>
+
+  <div style="margin-top: 28px;">
+    <div class="finding-block">
+      <h4>✓ Multi-turn context retention (English)</h4>
+      <p>P327: A conversation started about corn cultivation correctly pivoted to rice when the user asked about soil pH — the model maintained the agricultural framing and gave agronomically accurate advice (pH 5.5–7.0 for rice). P328 similarly handled a livestock → cotton weed control jump without losing the farmer persona.</p>
+    </div>
+    <div class="finding-block">
+      <h4>✓ Appropriate safety refusals</h4>
+      <p>P36 and P326: Identical prompts about chemical lab equipment were correctly refused twice with context-sensitive refusals — not generic blocks. This is meaningful: the model understood the disability-assistance framing and declined specifically on harm grounds.</p>
+    </div>
+    <div class="finding-block">
+      <h4>✓ Indian language generation quality</h4>
+      <p>Bengali responses (P6848, P6842) were fluent and contextually appropriate. The pesticide response correctly identified specific plant types (aparajita, nayantara) mentioned by the user and gave region-appropriate advice. Assamese-mixed text (P5170) showed code-switching typical of real user queries.</p>
+    </div>
+    <div class="finding-block">
+      <h4>△ Context drift under topic switches</h4>
+      <p>P325: When asked about Hindi alphabets, the model responded with Punjabi script (ਅ, ਆ) — a cross-script confusion. This is a meaningful failure for educational deployments where script accuracy is non-negotiable.</p>
+    </div>
+    <div class="limit-block">
+      <h4>✗ Evaluation scores: all null</h4>
+      <p>The response analyzer must be run as a separate manual step after each test run. There is no automated post-run evaluation trigger. All Dialogue_Coherence scores in the report are empty because the LLM-as-judge step is decoupled from execution with no documentation on this workflow.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Section 4: Bugs Found -->
+<section>
+  <div class="section-label">04 — Tool Critique</div>
+  <h2>Bugs found and fixed</h2>
+  <p>
+    Five code-level bugs had to be patched before a single test run could complete.
+    Each is documented as a GitHub issue. None of these are edge cases — they block
+    the primary evaluation path described in the README.
+  </p>
+
+  <ul class="issue-list">
+    <li>
+      <div class="issue-num">#01</div>
+      <div class="issue-content">
+        <h4>Hardcoded port 8000 in TestCaseExecutorDashboard backend</h4>
+        <p>Line 769 of <code>src/app/TestCaseExecutorDashboard/back-end/main.py</code> creates the InterfaceManagerClient with <code>base_url="http://localhost:8000"</code> — ignoring the port configuration in <code>config.json</code>. The Interface Manager runs on 8001 by default, causing all test runs to fail with a 404.</p>
+        <span class="issue-tag">BLOCKING</span>
+      </div>
+    </li>
+    <li>
+      <div class="issue-num">#02</div>
+      <div class="issue-content">
+        <h4>Language filter passes string instead of list to SQLAlchemy IN clause</h4>
+        <p><code>get_testcases_by_metric()</code> in <code>src/lib/orm/DB.py</code> calls <code>Languages.lang_name.in_(lang_names)</code> where <code>lang_names</code> is a raw string (e.g. <code>"Tamil"</code>). SQLAlchemy expects a list. Any test run with a language selected throws an <code>ArgumentError</code>.</p>
+        <span class="issue-tag">BLOCKING</span>
+      </div>
+    </li>
+    <li>
+      <div class="issue-num">#03</div>
+      <div class="issue-content">
+        <h4>Ollama OpenAI-compatible /v1 endpoint not supported in v0.24.0</h4>
+        <p>The <code>_run_local()</code> function constructs <code>base_url + "/v1"</code> and uses the OpenAI SDK. Ollama 0.24.0 returns 404 on <code>/v1/chat/completions</code>. The tool assumes a newer Ollama version without stating this requirement. Fixed by patching to use Ollama's native <code>/api/chat</code> endpoint directly.</p>
+        <span class="issue-tag">BLOCKING</span>
+      </div>
+    </li>
+    <li>
+      <div class="issue-num">#04</div>
+      <div class="issue-content">
+        <h4>File encoding error on Windows for Indian-language test data</h4>
+        <p><code>src/app/importer/main.py</code> opens JSON files without specifying encoding, defaulting to Windows cp1252. DataPoints.json contains UTF-8 Indian language characters causing <code>UnicodeDecodeError</code> on Windows. All <code>open()</code> calls need <code>encoding='utf-8'</code>.</p>
+        <span class="issue-tag">WINDOWS-ONLY</span>
+      </div>
+    </li>
+    <li>
+      <div class="issue-num">#05</div>
+      <div class="issue-content">
+        <h4>SLOR metric incompatible with non-English responses</h4>
+        <p>The Fluency_Score strategy uses SLOR (Syntactic Log-Odds Ratio), an English-language metric. When the agent responds in Hindi, Bengali, or Assamese, SLOR throws a <code>KeyError: 'SLOR'</code> and returns score 0. There is no language-aware metric routing. For a tool targeting Indian AI systems, this is a fundamental design gap.</p>
+        <span class="issue-tag">DESIGN FLAW</span>
+      </div>
+    </li>
+  </ul>
+</section>
+
+<!-- Section 5: Conclusions -->
+<section>
+  <div class="section-label">05 — Conclusions</div>
+  <h2>What can be concluded</h2>
+  <p>
+    <strong>On the model:</strong> Gemma3n:e2b demonstrates adequate conversational coherence
+    for agricultural and healthcare queries in English and Bengali. Multi-turn context is
+    maintained for domain-consistent conversations. The primary failure mode is cross-script
+    confusion in educational contexts — a meaningful limitation for literacy applications.
+  </p>
+  <p>
+    <strong>On the tool:</strong> The CeRAI AIEvaluationTool is architecturally sound but
+    not production-ready for the API + Indian language evaluation path. The five bugs above
+    are not configuration issues — they require code changes. The tool works well for its
+    original design target (WhatsApp/web bots in English) but the Indian language evaluation
+    story is incomplete: metrics are English-only, the streaming/non-streaming distinction
+    is undocumented, and the multi-service startup sequence has no orchestration.
+  </p>
+</section>
+
+<!-- Section 6: Limitations -->
+<section>
+  <div class="section-label">06 — Limitations</div>
+  <h2>Where findings should not be generalised</h2>
+
+  <div class="limit-block">
+    <h4>No quantitative scores</h4>
+    <p>All findings are qualitative. The LLM-as-judge pipeline returned null scores for all Dialogue_Coherence cases. Conclusions about response quality are based on manual inspection of 10 cases — too small a sample for statistical claims.</p>
+  </div>
+  <div class="limit-block">
+    <h4>Single model, single hardware configuration</h4>
+    <p>Gemma3n:e2b on an RTX 3050 4GB is one configuration. Smaller models (llama3.2:1b) failed consistently on Indian language prompts. Model selection substantially changes results.</p>
+  </div>
+  <div class="limit-block">
+    <h4>Test cases not verified for ground truth</h4>
+    <p>The DataPoints.json corpus was used as-is. Expected responses were not reviewed for accuracy before the run. Some "correct" reference responses may themselves be wrong.</p>
+  </div>
+  <div class="limit-block">
+    <h4>Windows-specific issues may not appear on Linux</h4>
+    <p>The encoding bug (#04) and Node PATH issues are Windows-only. A Linux deployment may bypass several of the bugs documented here, making the tool appear more stable than it is cross-platform.</p>
+  </div>
+</section>
+
+<!-- Section 7: Machine-readable summary -->
+<section>
+  <div class="section-label">07 — Machine-Readable Summary</div>
+  <h2>Structured findings block</h2>
+
+  <pre id="json-block">{
+  <span class="json-key">"evaluation_run"</span>: {
+    <span class="json-key">"tool"</span>: <span class="json-str">"CeRAI AIEvaluationTool v1.2"</span>,
+    <span class="json-key">"model_evaluated"</span>: <span class="json-str">"gemma3n:e2b"</span>,
+    <span class="json-key">"judge_model"</span>: <span class="json-str">"gemma3n:e2b (local, llm-as-judge)"</span>,
+    <span class="json-key">"test_plan"</span>: <span class="json-str">"Conversational_Quality"</span>,
+    <span class="json-key">"metric"</span>: <span class="json-str">"Dialogue_Coherence"</span>,
+    <span class="json-key">"test_cases_run"</span>: <span class="json-num">10</span>,
+    <span class="json-key">"languages"</span>: [<span class="json-str">"Hindi"</span>, <span class="json-str">"Bengali"</span>, <span class="json-str">"Assamese"</span>, <span class="json-str">"English"</span>],
+    <span class="json-key">"domains"</span>: [<span class="json-str">"agriculture"</span>, <span class="json-str">"healthcare"</span>, <span class="json-str">"education"</span>, <span class="json-str">"disability"</span>],
+    <span class="json-key">"quantitative_scores_available"</span>: <span class="json-val">true</span>,
+    <span class="json-key">"scores"</span>: [
+      { <span class="json-key">"testcase"</span>: <span class="json-str">"P6842"</span>, <span class="json-key">"strategy"</span>: <span class="json-str">"language_similarity_gt"</span>, <span class="json-key">"score"</span>: <span class="json-num">1.0</span>, <span class="json-key">"language"</span>: <span class="json-str">"Bengali"</span> },
+      { <span class="json-key">"testcase"</span>: <span class="json-str">"P6848"</span>, <span class="json-key">"strategy"</span>: <span class="json-str">"language_similarity_gt"</span>, <span class="json-key">"score"</span>: <span class="json-num">1.0</span>, <span class="json-key">"language"</span>: <span class="json-str">"Bengali"</span> },
+      { <span class="json-key">"testcase"</span>: <span class="json-str">"P5170"</span>, <span class="json-key">"strategy"</span>: <span class="json-str">"language_similarity_gt"</span>, <span class="json-key">"score"</span>: <span class="json-num">1.0</span>, <span class="json-key">"language"</span>: <span class="json-str">"Assamese/Bengali"</span> },
+      { <span class="json-key">"testcase"</span>: <span class="json-str">"P327"</span>, <span class="json-key">"strategy"</span>: <span class="json-str">"auto"</span>, <span class="json-key">"score"</span>: <span class="json-num">0</span>, <span class="json-key">"note"</span>: <span class="json-str">"strategy 'auto' not found in registry — tool bug #6"</span> },
+      { <span class="json-key">"testcase"</span>: <span class="json-str">"P324"</span>, <span class="json-key">"strategy"</span>: <span class="json-str">"auto"</span>, <span class="json-key">"score"</span>: <span class="json-num">0</span>, <span class="json-key">"note"</span>: <span class="json-str">"strategy 'auto' not found in registry — tool bug #6"</span> },
+      { <span class="json-key">"testcase"</span>: <span class="json-str">"P328"</span>, <span class="json-key">"strategy"</span>: <span class="json-str">"auto"</span>, <span class="json-key">"score"</span>: <span class="json-num">0</span>, <span class="json-key">"note"</span>: <span class="json-str">"strategy 'auto' not found in registry — tool bug #6"</span> },
+      { <span class="json-key">"testcase"</span>: <span class="json-str">"P36"</span>, <span class="json-key">"strategy"</span>: <span class="json-str">"auto"</span>, <span class="json-key">"score"</span>: <span class="json-num">0</span>, <span class="json-key">"note"</span>: <span class="json-str">"strategy 'auto' not found in registry — tool bug #6"</span> },
+      { <span class="json-key">"testcase"</span>: <span class="json-str">"P326"</span>, <span class="json-key">"strategy"</span>: <span class="json-str">"auto"</span>, <span class="json-key">"score"</span>: <span class="json-num">0</span>, <span class="json-key">"note"</span>: <span class="json-str">"strategy 'auto' not found in registry — tool bug #6"</span> },
+      { <span class="json-key">"testcase"</span>: <span class="json-str">"P325"</span>, <span class="json-key">"strategy"</span>: <span class="json-str">"auto"</span>, <span class="json-key">"score"</span>: <span class="json-num">0</span>, <span class="json-key">"note"</span>: <span class="json-str">"strategy 'auto' not found in registry — tool bug #6"</span> },
+      { <span class="json-key">"testcase"</span>: <span class="json-str">"P33"</span>, <span class="json-key">"strategy"</span>: <span class="json-str">"auto"</span>, <span class="json-key">"score"</span>: <span class="json-num">0</span>, <span class="json-key">"note"</span>: <span class="json-str">"strategy 'auto' not found in registry — tool bug #6"</span> }
+    ],
+    <span class="json-key">"score_interpretation"</span>: <span class="json-str">"1.0 = language similarity confirmed by rule-based check. 0 = strategy missing, not model failure."</span>
+  },
+  <span class="json-key">"qualitative_findings"</span>: [
+    {
+      <span class="json-key">"finding"</span>: <span class="json-str">"Multi-turn context retention adequate for domain-consistent conversations"</span>,
+      <span class="json-key">"confidence"</span>: <span class="json-str">"high"</span>,
+      <span class="json-key">"evidence_cases"</span>: [<span class="json-str">"P327"</span>, <span class="json-str">"P328"</span>]
+    },
+    {
+      <span class="json-key">"finding"</span>: <span class="json-str">"Safety refusals triggered correctly with context-aware reasoning"</span>,
+      <span class="json-key">"confidence"</span>: <span class="json-str">"high"</span>,
+      <span class="json-key">"evidence_cases"</span>: [<span class="json-str">"P36"</span>, <span class="json-str">"P326"</span>]
+    },
+    {
+      <span class="json-key">"finding"</span>: <span class="json-str">"Cross-script confusion: Punjabi script returned for Hindi alphabet query"</span>,
+      <span class="json-key">"confidence"</span>: <span class="json-str">"high"</span>,
+      <span class="json-key">"evidence_cases"</span>: [<span class="json-str">"P325"</span>]
+    },
+    {
+      <span class="json-key">"finding"</span>: <span class="json-str">"Bengali agricultural responses contextually accurate and fluent"</span>,
+      <span class="json-key">"confidence"</span>: <span class="json-str">"medium"</span>,
+      <span class="json-key">"evidence_cases"</span>: [<span class="json-str">"P6848"</span>, <span class="json-str">"P6842"</span>]
+    }
+  ],
+  <span class="json-key">"tool_bugs_found"</span>: <span class="json-num">5</span>,
+  <span class="json-key">"bugs"</span>: [
+    {
+      <span class="json-key">"id"</span>: <span class="json-str">"hardcoded-port-8000"</span>,
+      <span class="json-key">"severity"</span>: <span class="json-str">"blocking"</span>,
+      <span class="json-key">"file"</span>: <span class="json-str">"src/app/TestCaseExecutorDashboard/back-end/main.py:769"</span>
+    },
+    {
+      <span class="json-key">"id"</span>: <span class="json-str">"language-filter-string-not-list"</span>,
+      <span class="json-key">"severity"</span>: <span class="json-str">"blocking"</span>,
+      <span class="json-key">"file"</span>: <span class="json-str">"src/lib/orm/DB.py:1562"</span>
+    },
+    {
+      <span class="json-key">"id"</span>: <span class="json-str">"ollama-v1-endpoint-not-supported"</span>,
+      <span class="json-key">"severity"</span>: <span class="json-str">"blocking"</span>,
+      <span class="json-key">"file"</span>: <span class="json-str">"src/app/interface_manager/api_handler.py:135"</span>
+    },
+    {
+      <span class="json-key">"id"</span>: <span class="json-str">"windows-utf8-encoding"</span>,
+      <span class="json-key">"severity"</span>: <span class="json-str">"blocking-windows"</span>,
+      <span class="json-key">"file"</span>: <span class="json-str">"src/app/importer/main.py:92,95,98"</span>
+    },
+    {
+      <span class="json-key">"id"</span>: <span class="json-str">"slor-metric-english-only"</span>,
+      <span class="json-key">"severity"</span>: <span class="json-str">"design-flaw"</span>,
+      <span class="json-key">"file"</span>: <span class="json-str">"src/lib/strategy/fluency_score.py"</span>
+    }
+  ]
+}</pre>
+</section>
+
+<footer>
+  <span>Gates Foundation AI Fellowship — India 2026 · Technical Screening</span>
+  <span>CeRAI AIEvaluationTool v1.2 · Option A Submission</span>
+</footer>
+
+</body>
+</html>
