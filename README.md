@@ -190,13 +190,13 @@ Download the Excel report from the dashboard, or open `index.html` in a browser.
 
 ## Bugs filed
 
-| # | Title | Severity | File |
-|---|-------|----------|------|
-| 1 | Hardcoded port 8000 ignores config.json | Blocking | `TestCaseExecutorDashboard/back-end/main.py:769` |
-| 2 | Language filter passes string not list to SQLAlchemy IN | Blocking | `lib/orm/DB.py:1562` |
-| 3 | Ollama /v1 endpoint not supported in v0.24.0 | Blocking | `interface_manager/api_handler.py:135` |
-| 4 | UTF-8 encoding missing on Windows for Indian language data | Windows-blocking | `importer/main.py:92,95,98` |
-| 5 | SLOR metric incompatible with non-English responses | Design flaw | `lib/strategy/fluency_score.py` |
+| # | Title | Severity | File | Issue |
+|---|-------|----------|------|-------|
+| 1 | Hardcoded port 8000 ignores config.json | Blocking | `TestCaseExecutorDashboard/back-end/main.py:769` | [#188](https://github.com/cerai-iitm/AIEvaluationTool/issues/188) |
+| 2 | Language filter passes string not list to SQLAlchemy IN | Blocking | `lib/orm/DB.py:1562` | [#187](https://github.com/cerai-iitm/AIEvaluationTool/issues/187) |
+| 3 | Ollama /v1 endpoint not supported in v0.24.0 | Blocking | `interface_manager/api_handler.py:135` | [#186](https://github.com/cerai-iitm/AIEvaluationTool/issues/186) |
+| 4 | UTF-8 encoding missing on Windows for Indian language data | Windows-blocking | `importer/main.py:92,95,98` | [#185](https://github.com/cerai-iitm/AIEvaluationTool/issues/185) |
+| 5 | Strategy "auto" not found in registry | Design flaw | `metric_strategy_mapping.json` | [#184](https://github.com/cerai-iitm/AIEvaluationTool/issues/184) |
 
 ---
 
